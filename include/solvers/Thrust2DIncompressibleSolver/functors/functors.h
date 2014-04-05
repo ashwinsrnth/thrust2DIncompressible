@@ -27,7 +27,7 @@ public:
 
 class is_zero{
 public:
-	bool operator () (double x){
+	bool operator () (Real x){
 		if (x == 0){
 			return true;
 		}
@@ -124,7 +124,7 @@ private:
 
 class saxpy_functor{
 public:
-	saxpy_functor(double _x):x(_x){}
+	saxpy_functor(Real _x):x(_x){}
 
 	template <typename Tuple>
 	__host__ __device__
@@ -133,7 +133,7 @@ public:
 	}
 
 private:
-	double x;
+	Real x;
 };
 
 
@@ -164,7 +164,11 @@ public:
 
 	compute_rhs1_functor(const Grid _grid, const Params _params):
 										grid(_grid),
-										params(_params){}
+										params(_params){
+		dx = grid.L_x/grid.N_x;
+		dy = grid.L_y/grid.N_y;
+	}
+
 
 	template <typename Tuple>
 	__host__ __device__
@@ -191,10 +195,10 @@ public:
 
 			// compute r1x
 			thrust::get<0>(T) 	=
-									((u + ul)*(u + ul) - (u + ur)*(u + ur))/4. +
-									((u + ud)*(vll + vlr) - (u + uu)*(vul + vur))/4. +
+									((u + ul)*(u + ul) - (u + ur)*(u + ur))/(4.*dx) +
+									((u + ud)*(vll + vlr) - (u + uu)*(vul + vur))/(4.*dy) +
 									(1./params.Re)*
-									((ul - 2*u + ur) + (ud - 2*u + uu));
+									((ul - 2*u + ur)/(dx*dx) + (ud - 2*u + uu)/(dy*dy));
 		}
 
 		if (thrust::get<3>(T) == 0){
@@ -212,10 +216,10 @@ public:
 
 			// compute r1y
 			thrust::get<1>(T) = 
-									((v + vd)*(v + vd) - (v + vu)*(v + vu))/4. +
-									((v + vl)*(ull + uul) - (v + vr)*(ulr + uur))/4. +
+									((v + vd)*(v + vd) - (v + vu)*(v + vu))/(4.*dy) +
+									((v + vl)*(ull + uul) - (v + vr)*(ulr + uur))/(4.*dx) +
 									(1./params.Re)*
-									((vl - 2*v + vr) + (vd - 2*v + vu));
+									((vl - 2*v + vr)/(dx*dx) + (vd - 2*v + vu)/(dy*dy));
 		}
 
 	}
@@ -224,10 +228,11 @@ public:
 private:
 
 	int ix, iy;
+	Real dx, dy;
 
 	// left, right, down, up, upper left, upper right, lower left, lower right
-	double u, ul, ur, ud, uu, vll, vlr, vul, vur;
-	double v, vl, vr, vd, vu, ull, ulr, uul, uur;
+	Real u, ul, ur, ud, uu, vll, vlr, vul, vur;
+	Real v, vl, vr, vd, vu, ull, ulr, uul, uur;
 	const Grid grid;
 	const Params params;
 };
@@ -258,7 +263,11 @@ public:
 						I(_I),
 						J(_J),
 						V(_V),
-						grid(_grid){}
+						grid(_grid){
+	
+		dx = grid.L_x/grid.N_x;
+		dy = grid.L_y/grid.N_y;
+	}
 
 	template <typename Tuple>
 	__host__
@@ -280,23 +289,23 @@ public:
 			diag = 0; left = 0; right = 0; bottom = 0; top = 0;
 
 			if (thrust::get<1>(thrust::get<1>(T)) == 0){
-				left  	= 1;
-				diag   -= 1;
+				left  	= 1/(dx*dx);
+				diag   -= 1/(dx*dx);
 			}
 
 			if (thrust::get<2>(thrust::get<1>(T)) == 0){
-				right	= 1;
-				diag   -= 1;
+				right	= 1/(dx*dx);
+				diag   -= 1/(dx*dx);
 			}
 
 			if (thrust::get<3>(thrust::get<1>(T)) == 0){
-				bottom  = 1;
-				diag   -= 1;
+				bottom  = 1/(dy*dy);
+				diag   -= 1/(dy*dy);
 			}
 
 			if (thrust::get<4>(thrust::get<1>(T)) == 0){
-				top 	= 1;
-				diag   -= 1;
+				top 	= 1/(dy*dy);
+				diag   -= 1/(dy*dy);
 			}
 
 			I[i] = idx; J[i] = idx - grid.N_x; 	V[i] = bottom; i += 1;
@@ -314,6 +323,7 @@ public:
 
 private:
 	Grid& grid;
+	Real dx, dy;
 	int i;
 	int idx;
 	int diag, left, right, bottom, top;
@@ -325,7 +335,10 @@ class compute_rhs2_functor {
 
 public:
 
-	compute_rhs2_functor(Grid _grid, Params _params):grid(_grid), params(_params){}
+	compute_rhs2_functor(Grid _grid, Params _params):grid(_grid), params(_params){
+		dx = grid.L_x/grid.N_x;
+		dy = grid.L_y/grid.N_y;
+	}
 
 	template <typename Tuple>
 	__host__ __device__
@@ -335,13 +348,14 @@ public:
 			if (thrust::get<6>(T) == grid.N_x*grid.N_x/2 + grid.N_x/2)
 				thrust::get<0>(T) = 1.0;
 			else{
-			thrust::get<0>(T) = (thrust::get<1>(T) - thrust::get<2>(T) + 
-								 thrust::get<3>(T) - thrust::get<4>(T))/params.dt;
+			thrust::get<0>(T) = ((thrust::get<1>(T) - thrust::get<2>(T))/dx + 
+								 (thrust::get<3>(T) - thrust::get<4>(T))/dy)/params.dt;
 			}
 		}
 	}
 
 private:
+	Real dx, dy;
 	Grid grid;
 	Params params;
 };
@@ -351,7 +365,10 @@ class update_velocity_functor {
 
 public:
 
-	update_velocity_functor(Params _params):params(_params){}
+	update_velocity_functor(Grid _grid, Params _params):grid(_grid),params(_params){
+		dx = grid.L_x/grid.N_x;
+		dy = grid.L_y/grid.N_y;
+	}
 
 	template <typename Tuple>
 	__host__ __device__
@@ -359,19 +376,20 @@ public:
 		if (thrust::get<3>(T) == 0){
 			thrust::get<0>(T) -=
 								params.dt*(thrust::get<1>(thrust::get<2>(T)) -
-										thrust::get<0>(thrust::get<2>(T)));
+										thrust::get<0>(thrust::get<2>(T)))/dx;
 		}
 
 		if (thrust::get<4>(T) == 0){
 			thrust::get<1>(T) -=
 								params.dt*(thrust::get<2>(thrust::get<2>(T)) -
-										thrust::get<0>(thrust::get<2>(T)));
+										thrust::get<0>(thrust::get<2>(T)))/dy;
 		}
 	}
 
 private:
+	Grid grid;
 	Params params;
-
+	Real dx, dy;
 };
 
 
