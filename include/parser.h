@@ -12,6 +12,8 @@ namespace YAML
 			Node node;
 			node["N_x"] = g.N_x;
 			node["N_y"] = g.N_y;
+			node["L_X"] = g.L_x;
+			node["L_y"] = g.L_y;
 
 			return node;
 		}
@@ -19,7 +21,8 @@ namespace YAML
 		static bool decode(const Node& node, Grid& g){
 			g.N_x = node["N_x"].as<int>();
 			g.N_y = node["N_y"].as<int>();
-
+			g.L_x = node["L_x"].as<Real>();
+			g.L_y = node["L_y"].as<Real>();
 			return true;
 		}
 	};
