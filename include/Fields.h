@@ -3,6 +3,7 @@
 #include <types.h>
 
 class Fields{
+public:
 	// velocities, pressure and right-hand sides:
 	Vector 	u, 
 			v, 

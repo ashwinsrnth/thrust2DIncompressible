@@ -12,8 +12,13 @@ typedef cusp::device_memory MemoryType;
 typedef cusp::array1d<Real, cusp::host_memory> 		HostVector;
 typedef cusp::array1d<Real, cusp::device_memory>	DeviceVector;
 
-// Vector type:
-typedef cusp::array1d<Real, MemoryType>				Vector;
+// host and device int vectors:
+typedef cusp::array1d<int,  cusp::host_memory> 		HostIntVector;
+typedef cusp::array1d<int,  cusp::device_memory> 	DeviceIntVector;
+
+// Vector types:
+typedef cusp::array1d<Real, MemoryType>			Vector;
+typedef cusp::array1d<int,  MemoryType>			IntVector;
 
 // COO matrix:
 typedef cusp::coo_matrix<int, Real, MemoryType> 	COOMatrix;

@@ -1,5 +1,14 @@
 #include <iostream>
-#include <Solver.h>
+#include <solvers/Solver.h>
+#include <solvers/Thrust2DIncompressibleSolver/Thrust2DIncompressibleSolver.h>
+
+#include <Grid.h>
+#include <Fields.h>
+#include <Params.h>
+#include <Boundaries.h>
+
+#include <read.h>
+
 
 int main(){
 
@@ -8,12 +17,20 @@ int main(){
 	Params 		params;
 	Boundaries  boundaries;
 
-	Solver solver(grid, fields, params, boundaries);
+	read_inputs("simdata.yaml", grid, params, boundaries);
+	Thrust2DIncompressibleSolver solver(grid, fields, params, boundaries);
 
+	std::cout << "initialising .. " << std::endl;
 	solver.initialise();
 
+	std::cout << "initialised" << std::endl;
+	
+	int i = 0;
+
 	while(!solver.finished()){
+		std::cout << i << std::endl;
 		solver.take_step();
+		i++;
 	}
 
 	solver.write_results();
