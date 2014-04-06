@@ -237,16 +237,12 @@
 
 
 	void Thrust2DIncompressibleSolver::solve_poisson_system(){
-	    // cusp::verbose_monitor<double> monitor(fields.r2, 200, 1e-3);
-	    cusp::default_monitor<double> monitor(fields.r2, 200, 1e-3);
-	    cusp::identity_operator<double, cusp::device_memory> M(pMat.num_rows, pMat.num_rows);
-<<<<<<< HEAD
+	    // cusp::verbose_monitor<double> monitor(fields.r2, 500, 1e-3);
+	    cusp::default_monitor<double> monitor(fields.r2, 500, 1e-3);
+	    // cusp::identity_operator<double, cusp::device_memory> M(pMat.num_rows, pMat.num_rows);
 	    // cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor);
-	    cusp::krylov::cg(pMat, fields.p, fields.r2, monitor);
-=======
-	    //cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor);
-	    cusp::krylov::cg(pMat, fields.p, fields.r2, monitor, *preconditioner);
->>>>>>> 6d76ab94581463b3f43874803d12ea5fa69beae3
+	    // cusp::krylov::cg(pMat, fields.p, fields.r2, monitor, *preconditioner);
+	    cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor, *preconditioner);
 	}
 
 

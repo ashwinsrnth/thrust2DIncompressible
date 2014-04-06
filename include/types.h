@@ -17,8 +17,8 @@ typedef cusp::array1d<int,  cusp::host_memory> 		HostIntVector;
 typedef cusp::array1d<int,  cusp::device_memory> 	DeviceIntVector;
 
 // Vector types:
-typedef cusp::array1d<Real, MemoryType>			    Vector;
-typedef cusp::array1d<int,  MemoryType>			    IntVector;
+typedef cusp::array1d<Real, MemoryType>			Vector;
+typedef cusp::array1d<int,  MemoryType>			IntVector;
 
 // COO matrix and preconditioner:
 typedef cusp::coo_matrix<int, Real, MemoryType> 	COOMatrix;
