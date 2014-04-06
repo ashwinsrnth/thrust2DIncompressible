@@ -148,6 +148,10 @@
 		pMat.column_indices = J;
 		pMat.values = V; 
 		pMat.sort_by_row_and_column();
+
+		/* preconditioner: */
+        preconditioner = new cusp::precond::aggregation::smoothed_aggregation<int, Real, MemoryType>(pMat);
+ 
 	}
 	
 
@@ -238,8 +242,8 @@
 	    // cusp::verbose_monitor<double> monitor(fields.r2, 200, 1e-3);
 	    cusp::default_monitor<double> monitor(fields.r2, 200, 1e-3);
 	    cusp::identity_operator<double, cusp::device_memory> M(pMat.num_rows, pMat.num_rows);
-	    cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor);
-	    // cusp::krylov::cg(pMat, fields.p, fields.r2, monitor);
+	    //cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor);
+	    cusp::krylov::cg(pMat, fields.p, fields.r2, monitor, *preconditioner);
 	}
 
 

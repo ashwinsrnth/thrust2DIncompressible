@@ -12,7 +12,7 @@ namespace YAML
 			Node node;
 			node["N_x"] = g.N_x;
 			node["N_y"] = g.N_y;
-			node["L_X"] = g.L_x;
+			node["L_x"] = g.L_x;
 			node["L_y"] = g.L_y;
 
 			return node;
