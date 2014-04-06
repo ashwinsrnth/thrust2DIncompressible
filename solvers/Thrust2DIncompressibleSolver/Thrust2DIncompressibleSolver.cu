@@ -110,7 +110,6 @@
 		
 		p_labels_h = p_labels;
 
-		std::cout << "Launching functor" << std::endl;
 		thrust::for_each_n(	thrust::make_zip_iterator(
 								thrust::make_tuple(
 									thrust::make_counting_iterator(0),
@@ -124,7 +123,6 @@
 							grid.N_x*grid.N_y,
 							make_poisson_functor(I, J, V, grid));
 
-		std::cout << "Launched" << std::endl;
 
 		thrust::remove_if(	I.begin(),
 								I.end(),
@@ -238,8 +236,8 @@
 	    // cusp::verbose_monitor<double> monitor(fields.r2, 200, 1e-3);
 	    cusp::default_monitor<double> monitor(fields.r2, 200, 1e-3);
 	    cusp::identity_operator<double, cusp::device_memory> M(pMat.num_rows, pMat.num_rows);
-	    cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor);
-	    // cusp::krylov::cg(pMat, fields.p, fields.r2, monitor);
+	    // cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor);
+	    cusp::krylov::cg(pMat, fields.p, fields.r2, monitor);
 	}
 
 

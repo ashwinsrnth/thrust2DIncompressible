@@ -346,7 +346,7 @@ public:
 	void operator () (Tuple T){
 		if (thrust::get<5>(T) == 0){
 			if (thrust::get<6>(T) == grid.N_x*grid.N_x/2 + grid.N_x/2)
-				thrust::get<0>(T) = 1.0;
+				thrust::get<0>(T) = 0;
 			else{
 			thrust::get<0>(T) = ((thrust::get<1>(T) - thrust::get<2>(T))/dx + 
 								 (thrust::get<3>(T) - thrust::get<4>(T))/dy)/params.dt;
@@ -451,6 +451,7 @@ private:
 	int ix, iy;
 
 };
+
 
 
 

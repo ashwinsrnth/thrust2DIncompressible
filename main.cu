@@ -18,6 +18,7 @@ int main(){
 	Boundaries  boundaries;
 
 	read_inputs("simdata.yaml", grid, params, boundaries);
+	std::cout << "OK" << std::endl;
 	Thrust2DIncompressibleSolver solver(grid, fields, params, boundaries);
 
 	std::cout << "initialising .. " << std::endl;
