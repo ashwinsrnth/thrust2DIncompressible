@@ -1,9 +1,9 @@
 	#include <types.h>
 
-	#include <solvers/Thrust2DIncompressibleSolver/Thrust2DIncompressibleSolver.h>
-	#include <solvers/Thrust2DIncompressibleSolver/thrust_iterators.h>
-	#include <solvers/Thrust2DIncompressibleSolver/functors/functors.h>
-	#include <solvers/Thrust2DIncompressibleSolver/write.h>
+	#include <Thrust2DIncompressibleSolver.h>
+	#include <thrust_iterators.h>
+	#include <functors.h>
+	#include <write.h>
 
 	#include <thrust/gather.h>
 	#include <thrust/tuple.h>

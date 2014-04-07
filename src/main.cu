@@ -1,6 +1,6 @@
 #include <iostream>
-#include <solvers/Solver.h>
-#include <solvers/Thrust2DIncompressibleSolver/Thrust2DIncompressibleSolver.h>
+#include <Solver.h>
+#include <Thrust2DIncompressibleSolver.h>
 
 #include <Grid.h>
 #include <Fields.h>

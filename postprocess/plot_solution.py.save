@@ -1,0 +1,31 @@
+import sys
+from pylab import *
+
+N_x = float(sys.argv[1])
+N_y = float(sys.argv[2])
+
+
+u = loadtxt('u.txt')
+v = loadtxt('v.txt')
+
+
+
+u = u.reshape([N_x, N_y])
+v = v.reshape([N_x, N_y])
+
+quiver(u[1:-1], v[1:-1])
+q	figure()
+
+
+plot(linspace(0, 1, len(v)),v[len(v)/2,:], label = 'GPU solver')
+
+# ghia solution:
+
+pts = [1, 0.9688, 0.9609, 0.9531, 0.9453, 0.9063, 0.8594, 0.8047, 0.5, 0.2344, 0.2266, 0.1563, 0.0938, 0.0781, 0.0703, 0.0625, 0.0]
+g_u = [0, -0.059, -0.074, -0.088, -0.103, -0.169, -0.2245, -0.24533, 0.054, 0.17527, 0.17507, 0.160, 0.123, 0.1089, 0.10091, 0.09233, 0]
+
+plot(pts, g_u, 'o', label = 'Ghia et. al')
+legend()
+show()
+
+print np.max(u[shape(u)[0]/2,:])
