@@ -17,23 +17,21 @@ int main(){
 	Params 		params;
 	Boundaries  boundaries;
 
-	read_inputs("simdata.yaml", grid, params, boundaries);
-	std::cout << "OK" << std::endl;
+	std::cout << "Reading input data ... " << std::endl;
+	read_inputs("../simdata.yaml", grid, params, boundaries);
+	std::cout << "Initialising solver ... " << std::endl;
 	Thrust2DIncompressibleSolver solver(grid, fields, params, boundaries);
-
-	std::cout << "initialising .. " << std::endl;
 	solver.initialise();
-
-	std::cout << "initialised" << std::endl;
 	
+	std::cout << "Time steps: " << std::endl;
 	int i = 0;
-
 	while(!solver.finished()){
 		std::cout << i << std::endl;
 		solver.take_step();
 		i++;
 	}
 
+	std::cout << "Writing results ..." << std::endl;
 	solver.write_results();
 	solver.close();
 

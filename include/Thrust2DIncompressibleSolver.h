@@ -1,5 +1,5 @@
 #pragma once
-#include <solvers/Solver.h>
+#include <Solver.h>
 #include <types.h>
 #include <cusp/precond/aggregation/smoothed_aggregation.h>
 

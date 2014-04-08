@@ -1,0 +1,16 @@
+grid:
+    N_x : 128
+    N_y : 128
+    L_x : 1
+    L_y : 1
+
+params:
+    Re : 1000
+    dt : 0.00001
+    nsteps : 200000
+
+boundaries:
+    left :      [dirichlet, 0.0]
+    right :     [dirichlet, 0.0]
+    bottom :    [dirichlet, 0]
+    top :       [dirichlet, 1]
