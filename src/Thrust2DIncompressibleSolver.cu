@@ -41,16 +41,15 @@
 	}
 
 	// TODO
-	void Thrust2DInc
-	ompressibleSolver::write_results(){
+	void Thrust2DIncompressibleSolver::write_results(){
 
 		HostVector u_h = fields.u;
 		HostVector v_h = fields.v;
 		HostVector p_h = fields.p;
 
-		write_vector<Real>(u_h, "../results/u.txt");
-		write_vector<Real>(v_h, "../results/v.txt");
-		write_vector<Real>(p_h, "../results/p.txt");
+		write_vector<Real>(u_h, "results/u.txt");
+		write_vector<Real>(v_h, "results/v.txt");
+		write_vector<Real>(p_h, "results/p.txt");
 
 	}
 

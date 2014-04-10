@@ -5,9 +5,9 @@ grid:
     L_y : 1
 
 params:
-    Re : 1000
+    Re : 100
     dt : 0.00001
-    nsteps : 200000
+    nsteps : 1000
 
 boundaries:
     left :      [dirichlet, 0.0]
