@@ -41,15 +41,16 @@
 	}
 
 	// TODO
-	void Thrust2DIncompressibleSolver::write_results(){
+	void Thrust2DInc
+	ompressibleSolver::write_results(){
 
 		HostVector u_h = fields.u;
 		HostVector v_h = fields.v;
 		HostVector p_h = fields.p;
 
-		write_vector<Real>(u_h, "u.txt");
-		write_vector<Real>(v_h, "v.txt");
-		write_vector<Real>(p_h, "p.txt");
+		write_vector<Real>(u_h, "../results/u.txt");
+		write_vector<Real>(v_h, "../results/v.txt");
+		write_vector<Real>(p_h, "../results/p.txt");
 
 	}
 
@@ -105,9 +106,7 @@
 
 
 	void Thrust2DIncompressibleSolver::make_poisson_matrix(){
-		std::cout << p_labels.size() << std::endl;
-		std::cout << p_labels_h.size() << std::endl;
-		
+
 		p_labels_h = p_labels;
 
 		thrust::for_each_n(	thrust::make_zip_iterator(

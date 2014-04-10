@@ -276,16 +276,17 @@ public:
 		idx  = thrust::get<0>(T);
 		i = 5*idx;
 
-		if ((thrust::get<0>(thrust::get<1>(T)) == 1) or (idx == grid.N_x*(grid.N_y/2) + grid.N_x/2)){
-			I[i] = idx; J[i] = idx; V[i] = 1; i += 1;
-			I[i] = 0; 	J[i] = 0;	V[i] = 0; i += 1;
-			I[i] = 0; 	J[i] = 0;	V[i] = 0; i += 1;
-			I[i] = 0; 	J[i] = 0;	V[i] = 0; i += 1;
-			I[i] = 0; 	J[i] = 0; 	V[i] = 0;
+		if ((thrust::get<0>(thrust::get<1>(T)) == 1)){
+			I[i] = idx; J[i] = idx - grid.N_x; 	V[i] = 0; i += 1;
+			I[i] = idx; J[i] = idx - 1;	 		V[i] = 0; i += 1;
+			I[i] = idx; J[i] = idx;		 		V[i] = 1; i += 1;
+			I[i] = idx; J[i] = idx + 1;	 		V[i] = 0; i += 1;
+			I[i] = idx; J[i] = idx + grid.N_x; 	V[i] = 0;
 		}
 
 		// if inner:
-		else{
+		else {
+
 			diag = 0; left = 0; right = 0; bottom = 0; top = 0;
 
 			if (thrust::get<1>(thrust::get<1>(T)) == 0){
@@ -308,12 +309,19 @@ public:
 				diag   -= 1/(dy*dy);
 			}
 
-			I[i] = idx; J[i] = idx - grid.N_x; 	V[i] = bottom; i += 1;
-			I[i] = idx; J[i] = idx - 1;	 		V[i] = left;   i += 1;
-			I[i] = idx; J[i] = idx;		 		V[i] = diag;   i += 1;
-			I[i] = idx; J[i] = idx + 1;	 		V[i] = right;  i += 1;
+			I[i] = idx; J[i] = idx - grid.N_x; 	V[i] = bottom;	i += 1;
+			I[i] = idx; J[i] = idx - 1;	 		V[i] = left; 	i += 1;
+			I[i] = idx; J[i] = idx;		 		V[i] = diag;	i += 1;
+			I[i] = idx; J[i] = idx + 1;	 		V[i] = right;   i += 1;
 			I[i] = idx; J[i] = idx + grid.N_x; 	V[i] = top;
+
+			if (idx == grid.N_x*(grid.N_y/2) + grid.N_x/2){
+				// retrace and correct:
+				V[i-2] += 1;
+			}
 		}	
+
+
 
 	}
 
@@ -451,6 +459,7 @@ private:
 	int ix, iy;
 
 };
+
 
 
 
