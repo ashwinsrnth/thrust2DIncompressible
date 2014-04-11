@@ -147,6 +147,7 @@
 
 		/* preconditioner: */
         preconditioner = new cusp::precond::aggregation::smoothed_aggregation<int, Real, MemoryType>(pMat);
+        // preconditioner = new cusp::precond::scaled_bridson_ainv<Real, MemoryType>(pMat, .1);
  
 	}
 	
@@ -235,8 +236,8 @@
 
 
 	void Thrust2DIncompressibleSolver::solve_poisson_system(){
-	    // cusp::verbose_monitor<double> monitor(fields.r2, 500, 1e-3);
-	    cusp::default_monitor<double> monitor(fields.r2, 500, 1e-3);
+	    cusp::verbose_monitor<double> monitor(fields.r2, 5000, 1e-2);
+	    // cusp::default_monitor<double> monitor(fields.r2, 500, 1e-3);
 	    // cusp::identity_operator<double, cusp::device_memory> M(pMat.num_rows, pMat.num_rows);
 	    // cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor);
 	    // cusp::krylov::cg(pMat, fields.p, fields.r2, monitor, *preconditioner);

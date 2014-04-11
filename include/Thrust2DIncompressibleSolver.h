@@ -2,7 +2,7 @@
 #include <Solver.h>
 #include <types.h>
 #include <cusp/precond/aggregation/smoothed_aggregation.h>
-
+#include <cusp/precond/ainv.h>
 
 class Thrust2DIncompressibleSolver : public Solver{
 
@@ -36,6 +36,9 @@ private:
 
 	// preconditioner:
 	cusp::precond::aggregation::smoothed_aggregation<int, Real, MemoryType>* preconditioner;
+        
+
+
 
 	// I, J, V and COO matrix for Poisson system:
 	HostIntVector I;

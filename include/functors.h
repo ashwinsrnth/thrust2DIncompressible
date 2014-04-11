@@ -183,8 +183,8 @@ public:
 		if (thrust::get<2>(T) == 0){
 
 			// Aliases:
-			u 	= thrust::get<0>(thrust::get<4>(T));
-			ul 	= thrust::get<1>(thrust::get<4>(T));
+			u   = thrust::get<0>(thrust::get<4>(T));
+			ul  = thrust::get<1>(thrust::get<4>(T));
 			ur  = thrust::get<2>(thrust::get<4>(T));
 			ud  = thrust::get<3>(thrust::get<4>(T));
 			uu  = thrust::get<4>(thrust::get<4>(T));
@@ -275,13 +275,13 @@ public:
 
 		idx  = thrust::get<0>(T);
 		i = 5*idx;
-
+		
 		if ((thrust::get<0>(thrust::get<1>(T)) == 1)){
-			I[i] = idx; J[i] = idx - grid.N_x; 	V[i] = 0; i += 1;
-			I[i] = idx; J[i] = idx - 1;	 		V[i] = 0; i += 1;
-			I[i] = idx; J[i] = idx;		 		V[i] = 1; i += 1;
-			I[i] = idx; J[i] = idx + 1;	 		V[i] = 0; i += 1;
-			I[i] = idx; J[i] = idx + grid.N_x; 	V[i] = 0;
+			I[i] = -1;  J[i] = -1; 		V[i] = 0; i += 1;
+			I[i] = -1;  J[i] = -1;	 	V[i] = 0; i += 1;
+			I[i] = idx; J[i] = idx;		V[i] = 1; i += 1;
+			I[i] = -1;  J[i] = -1;	 	V[i] = 0; i += 1;
+			I[i] = -1;  J[i] = -1; 		V[i] = 0;
 		}
 
 		// if inner:
@@ -310,14 +310,13 @@ public:
 			}
 
 			I[i] = idx; J[i] = idx - grid.N_x; 	V[i] = bottom;	i += 1;
-			I[i] = idx; J[i] = idx - 1;	 		V[i] = left; 	i += 1;
-			I[i] = idx; J[i] = idx;		 		V[i] = diag;	i += 1;
-			I[i] = idx; J[i] = idx + 1;	 		V[i] = right;   i += 1;
+			I[i] = idx; J[i] = idx - 1;	 	V[i] = left; 	i += 1;
+			I[i] = idx; J[i] = idx; 	 	V[i] = diag;	i += 1;
+			I[i] = idx; J[i] = idx + 1;	 	V[i] = right;   i += 1;
 			I[i] = idx; J[i] = idx + grid.N_x; 	V[i] = top;
-
-			if (idx == grid.N_x*(grid.N_y/2) + grid.N_x/2){
-				// retrace and correct:
-				V[i-2] += 1;
+			
+			if (idx == grid.N_x*grid.N_y/2 + grid.N_x/2){
+				V[i-2] = 1e10;
 			}
 		}	
 
@@ -353,12 +352,8 @@ public:
 
 	void operator () (Tuple T){
 		if (thrust::get<5>(T) == 0){
-			if (thrust::get<6>(T) == grid.N_x*grid.N_x/2 + grid.N_x/2)
-				thrust::get<0>(T) = 0;
-			else{
 			thrust::get<0>(T) = ((thrust::get<1>(T) - thrust::get<2>(T))/dx + 
-								 (thrust::get<3>(T) - thrust::get<4>(T))/dy)/params.dt;
-			}
+			             	     (thrust::get<3>(T) - thrust::get<4>(T))/dy)/params.dt;
 		}
 	}
 
