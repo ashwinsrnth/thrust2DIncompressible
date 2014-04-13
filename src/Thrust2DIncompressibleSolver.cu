@@ -12,6 +12,8 @@
 
 	#include <cusp/krylov/bicgstab.h>
 	#include <cusp/krylov/cg.h>
+	#include <cusp/io/matrix_market.h>
+
 
 	Thrust2DIncompressibleSolver::Thrust2DIncompressibleSolver(Grid& _g, Fields& _f, Params& _p, Boundaries& _b):
 		grid(_g),
@@ -50,6 +52,8 @@
 		write_vector<Real>(u_h, "results/u.txt");
 		write_vector<Real>(v_h, "results/v.txt");
 		write_vector<Real>(p_h, "results/p.txt");
+		
+		cusp::io::write_matrix_market_file(pMat, "A.mtx");
 
 	}
 
@@ -240,8 +244,8 @@
 	    // cusp::default_monitor<double> monitor(fields.r2, 500, 1e-3);
 	    // cusp::identity_operator<double, cusp::device_memory> M(pMat.num_rows, pMat.num_rows);
 	    // cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor);
-	    // cusp::krylov::cg(pMat, fields.p, fields.r2, monitor, *preconditioner);
-	    cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor, *preconditioner);
+	    cusp::krylov::cg(pMat, fields.p, fields.r2, monitor, *preconditioner);
+	    // cusp::krylov::bicgstab(pMat, fields.p, fields.r2, monitor, *preconditioner);
 	}
 
 

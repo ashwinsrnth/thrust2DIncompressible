@@ -311,13 +311,10 @@ public:
 
 			I[i] = idx; J[i] = idx - grid.N_x; 	V[i] = bottom;	i += 1;
 			I[i] = idx; J[i] = idx - 1;	 	V[i] = left; 	i += 1;
-			I[i] = idx; J[i] = idx; 	 	V[i] = diag;	i += 1;
+			I[i] = idx; J[i] = idx; 	 	V[i] = diag*(1 + (1e-6)/(dx*dy));	i += 1;
 			I[i] = idx; J[i] = idx + 1;	 	V[i] = right;   i += 1;
 			I[i] = idx; J[i] = idx + grid.N_x; 	V[i] = top;
 			
-			if (idx == grid.N_x*grid.N_y/2 + grid.N_x/2){
-				V[i-2] = 1e10;
-			}
 		}	
 
 
