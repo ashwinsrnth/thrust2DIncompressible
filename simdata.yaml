@@ -3,5 +3,5 @@ boundaries:
   left: [dirichlet, 0.0]
   right: [dirichlet, 0.0]
   top: [dirichlet, 1]
-grid: {L_x: 1, L_y: 1, N_x: 128, N_y: 128}
-params: {Re: 100, dt: 0.001, nsteps: 1000}
+grid: {L_x: 1, L_y: 1, N_x: 256, N_y: 256}
+params: {Re: 10000, dt: 0.000762939453125, nsteps: 131072}

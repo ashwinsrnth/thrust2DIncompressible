@@ -311,7 +311,7 @@ public:
 
 			I[i] = idx; J[i] = idx - grid.N_x; 	V[i] = bottom;	i += 1;
 			I[i] = idx; J[i] = idx - 1;	 	V[i] = left; 	i += 1;
-			I[i] = idx; J[i] = idx; 	 	V[i] = diag*(1 + (1e-6)/(dx*dy));	i += 1;
+			I[i] = idx; J[i] = idx; 	 	V[i] = diag*(1 + 1e-5);	i += 1;
 			I[i] = idx; J[i] = idx + 1;	 	V[i] = right;   i += 1;
 			I[i] = idx; J[i] = idx + grid.N_x; 	V[i] = top;
 			
