@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 # validate solver against results from ghia et. al. 
 # square domain (L = H = 1) and lid driven condition with U = 1
 
-Reynold_numbers = [10000]
+Reynold_numbers = [1000]
 
 # go to project home directory
 os.chdir('..')
@@ -27,8 +27,8 @@ for Re in Reynold_numbers:
     dat['params']['Re'] = Re
    
     # CFL based computation of dt
-    dat['params']['dt']  = 0.005*(dx**2)*Re
-    dat['params']['nsteps'] = int(100/dat['params']['dt'])
+    dat['params']['dt']  = 0.25*(dx**2)*Re
+    dat['params']['nsteps'] = int(10/dat['params']['dt'])
 
     # update simulation data file
     with open('simdata.yaml', 'w') as f:
@@ -46,8 +46,8 @@ for Re in Reynold_numbers:
     v = v.reshape([grid_size, grid_size])
     
     [x, y] = np.meshgrid(np.linspace(0, 1, grid_size), np.linspace(0, 1, grid_size))
-    plt.streamplot(x, y, u, v)
-    plt.savefig('streamplot%d.png'%Re)
+    plt.streamplot(x, y, u, v, color='k')
+    plt.savefig('validation/streamplot%d.png'%Re)
     plt.close()
 
     # extract the centre line velocities:
